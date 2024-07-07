@@ -4,7 +4,7 @@
 
 ### Build and/or install Alacritty
 
-1. [Installation instructions]("https://github.com/alacritty/alacritty/blob/master/INSTALL.md")
+1. [Installation instructions](https://github.com/alacritty/alacritty/blob/master/INSTALL.md)
 
 ### Build and/or install Zellij
 
