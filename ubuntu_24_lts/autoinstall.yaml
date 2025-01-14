@@ -68,6 +68,8 @@ autoinstall:
   snaps:
     - name: nvim
       classic: true
+    - name: alacritty
+      classic: true
   packages:
     - git
     - build-essential
