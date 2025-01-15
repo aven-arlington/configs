@@ -78,6 +78,7 @@ autoinstall:
     - git
     - build-essential
     - curl
+    - dos2unix
   timezone: America/Los_Angeles
   updates: all
   shutdown: reboot
