@@ -48,6 +48,7 @@ autoinstall:
     layout:
       name: lvm
   identity:
+    # Update
     hostname: <hostname>
     password: <sha-512+salt password hash. Use mkpasswd -m SHA-512 --salt <salt> to generate one>
     realname: <Real User Name>
@@ -55,6 +56,7 @@ autoinstall:
   ubuntu-pro:
     token: <token>
   ssh:
+    # Update
     install-server: true
     allow-pw: false
     authorized-keys:
@@ -70,6 +72,8 @@ autoinstall:
       classic: true
     - name: alacritty
       classic: true
+    - name: code
+      classic: true
   packages:
     - git
     - build-essential
@@ -78,9 +82,17 @@ autoinstall:
   updates: all
   shutdown: reboot
   late-commands:
+    - curtin in-target -- sed -i 's/#WaylandEnable=false/WaylandEnable=true/g' /etc/gdm3/custom.conf
     - curtin in-target -- add-apt-repository ppa:yubico/stable && apt-get update
     - curtin in-target -- apt-get install -y libpam-u2f
     - curtin in-target -- curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+    - curtin in-target -- git config --system init.defaultBranch main
+    - curtin in-target -- git config --system color.ui true
+    - curtin in-target -- git config --system merge.conflictStyle zdiff3
+    - curtin in-target -- git config --system core.editor "nvim"
+    # Update
+    - curtin in-target -- git config --system user.name "<username>"
+    - curtin in-target -- git config --system user.email <username>@gmail.com
   reporting:
     builtin:
       type: print
