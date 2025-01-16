@@ -83,17 +83,28 @@ autoinstall:
   updates: all
   shutdown: reboot
   late-commands:
-    - curtin in-target -- sed -i 's/#WaylandEnable=false/WaylandEnable=true/g' /etc/gdm3/custom.conf
-    - curtin in-target -- add-apt-repository ppa:yubico/stable && apt-get update
-    - curtin in-target -- apt-get install -y libpam-u2f
+    - sed -i 's/#WaylandEnable=false/WaylandEnable=true/g' /target/etc/gdm3/custom.conf
+    # Update
+    - |
+        echo "Defaults timestamp_timeout=60" | (EDITOR="tee -a" visudo -f /target/etc/sudoers.d/<user name>)
+        echo "Defaults passwd_tries=3" | (EDITOR="tee -a" visudo -f /target/etc/sudoers.d/<user name>)
+        chmod 440 /target/etc/sudoers.d/<user name>
+    # Update
+    - |
+        echo "PermitRootLogin no" | tee -a /target/etc/ssh/sshd_config.d/<user name>.conf
+        echo "PasswordAuthentication no" | tee -a /target/etc/ssh/sshd_config.d/<user name>.conf
+        echo "ClientAliveInterval 60" | tee -a /target/etc/ssh/sshd_config.d/<user name>.conf
+        echo "ClientAliveCountMax 60" | tee -a /target/etc/ssh/sshd_config.d/<user name>.conf
     - curtin in-target -- curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
     - curtin in-target -- git config --system init.defaultBranch main
     - curtin in-target -- git config --system color.ui true
     - curtin in-target -- git config --system merge.conflictStyle zdiff3
     - curtin in-target -- git config --system core.editor "nvim"
     # Update
-    - curtin in-target -- git config --system user.name "<username>"
-    - curtin in-target -- git config --system user.email <username>@gmail.com
+    - curtin in-target -- git config --system user.name "<name>"
+    - curtin in-target -- git config --system user.email <email>@gmail.com
+    - curtin in-target -- add-apt-repository -y ppa:yubico/stable && apt-get update
+    - curtin in-target -- apt-get install -y libpam-u2f
   reporting:
     builtin:
       type: print
