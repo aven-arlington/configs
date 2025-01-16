@@ -15,5 +15,3 @@ update-alternatives --auto vim
 update-alternatives --install /usr/bin/vi vi /snap/nvim/current/bin/nvim-wrapper 50
 update-alternatives --auto vi
 
-# Increase sudo timeout
-printf "To increase the sudo timeout...\nRun the command:\nsudo visudo -f /etc/sudoers.d/<user_name>\nand then add the line:\nDefaults timestamp_timeout=<number in minutes>\n"
